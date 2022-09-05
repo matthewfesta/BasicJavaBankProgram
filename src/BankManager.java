@@ -18,7 +18,7 @@ public class BankManager {
 
 
     public static void main(String[] args) {
-        Bank mainBank = new Bank();
+        Bank mainBank = new Bank(bankAccounts);
         Account[] bankAccounts = new Account[MAX_ACCOUNTS];
         for (int i = 0; i < MAX_ACCOUNTS; i++) {
             bankAccounts[i] = new Account();

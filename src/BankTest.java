@@ -14,7 +14,7 @@ class BankTest {
         account.setLastName("Bar");
         account.setSocSecurity("123456789");
         account.setPin(String.valueOf(BankUtility.generateRandomInteger(1000, 9999)));
-        Bank bank = new Bank();
+        Bank bank = new Bank(bankAccounts);
         Account[] bankAccounts = new Account[1];
         bank.setBankAccounts(bankAccounts);
         boolean expResult = true;
@@ -26,7 +26,7 @@ class BankTest {
     void addNullAccountToBank() {
         System.out.println("addAccountToBank");
         Account account = null;
-        Bank bank = new Bank();
+        Bank bank = new Bank(bankAccounts);
         boolean expResult = false;
         boolean result = bank.addAccountToBank(account);
         assertEquals(expResult, result);
@@ -42,7 +42,7 @@ class BankTest {
         account.setLastName("Bar");
         account.setSocSecurity("123456789");
         account.setPin(String.valueOf(1234));
-        Bank bank = new Bank();
+        Bank bank = new Bank(bankAccounts);
         bank.addAccountToBank(account);
 
         boolean expResult = true;
@@ -53,7 +53,7 @@ class BankTest {
     void removeNullAccountFromBank() {
         System.out.println("removeFromBank");
         Account account = null;
-        Bank bank = new Bank();
+        Bank bank = new Bank(bankAccounts);
 
         boolean expResult = false;
         boolean result = bank.removeAccountFromBank(account);
@@ -69,7 +69,7 @@ class BankTest {
         account.setLastName("Bar");
         account.setSocSecurity("123-45-6789");
         account.setPin(String.valueOf(1234));
-        Bank bank = new Bank();
+        Bank bank = new Bank(bankAccounts);
         bank.addAccountToBank(account);
 
         int accountNumber = 12345678;
@@ -88,7 +88,7 @@ class BankTest {
         account.setSocSecurity("123456789");
         account.setPin(String.valueOf(1234));
         account.setBalance(100.00);
-        Bank bank = new Bank();
+        Bank bank = new Bank(bankAccounts);
         Account[] bankAccounts = new Account[1];
         bank.setBankAccounts(bankAccounts);
         bank.addAccountToBank(account);
@@ -109,7 +109,7 @@ class BankTest {
         account.setSocSecurity("123456789");
         account.setPin(String.valueOf(1234));
         account.setBalance(500.00);
-        Bank bank = new Bank();
+        Bank bank = new Bank(bankAccounts);
         bank.addAccountToBank(account);
 
         double percentage = 1.25;
@@ -130,7 +130,7 @@ class BankTest {
         account.setSocSecurity("123456789");
         account.setPin(String.valueOf(1234));
         account.setBalance(2000.00);
-        Bank bank = new Bank();
+        Bank bank = new Bank(bankAccounts);
         bank.addAccountToBank(account);
 
         double percentage = 1.25;
