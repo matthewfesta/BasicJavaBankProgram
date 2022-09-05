@@ -5,19 +5,15 @@
 public class Account {
 
     /**
-     * These are the attributes used in the accounts.
+     * These are the fields used in the accounts.
      */
-    private Account account;
     private int accountNumber;
     private String firstName;
     private String lastName;
     private String socSecurity;
     private String pin;
-    private double balance;  // TODO change datatype to long. Make conversions where necessary.
+    private double balance;
 
-
-
-//    Account account = new Account();
 
     /**
      * This constructor initializes the account object of the class
@@ -102,9 +98,10 @@ public class Account {
      * @return
      */
     public long deposit(double amount) {
-        double doubBalance = account.getBalance();
-        double newBalance = setBalance(doubBalance + amount);
-        return (long) newBalance;
+        System.out.println("$" + amount + " has been deposited into " +
+                this.accountNumber + " and the new balance is: "
+                + (this.balance + amount));
+        return (long) (this.balance += amount);
     }
 
 
@@ -114,8 +111,16 @@ public class Account {
      * @return
      */
     public long withdraw(double amount) {
-        double newBalance = this.balance - amount;
-        return (long) newBalance;
+        if (amount > this.balance) {
+            System.out.println("Insufficient funds");
+            return 0;
+        } else {
+            System.out.println("$" + amount + " has been withdrawn from "
+                    + this.accountNumber + " and the new balance is: "
+                    + (this.balance - amount));
+            return (long) (this.balance -= amount);
+        }
+
     }
 
     /**
@@ -125,8 +130,7 @@ public class Account {
      * @return
      */
     public boolean isValidPIN(String pin) {
-        String accountPin = this.pin;
-        if (accountPin.equals(pin)) {
+        if (this.pin.equals(pin)) {
             System.out.println("PIN is valid!");
             return true;
         }
