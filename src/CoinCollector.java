@@ -22,25 +22,27 @@ public final class CoinCollector {
      */
     public static long parseChange(String coins) {
         int countCoins = 0;
-        char[] coinArray = coins.toCharArray();
-        for (int i = 0; i < coinArray.length; i++) {
-            if (coinArray[i] == 'P') {
-                countCoins++;
-            } else if (coinArray[i] == 'N') {
+        // split the string into an array
+        String[] coinArray = coins.split("");
+        // iterate through the array
+        for (String coin : coinArray) {
+            // if the coin is a penny
+            if (coin.equals("P")) {
+                countCoins += 1;
+            }
+            // if the coin is a nickel
+            if (coin.equals("N")) {
                 countCoins += 5;
-            } else if (coinArray[i] == 'D') {
+            }
+            // if the coin is a dime
+            if (coin.equals("D")) {
                 countCoins += 10;
-            } else if (coinArray[i] == 'Q') {
+            }
+            // if the coin is a quarter
+            if (coin.equals("Q")) {
                 countCoins += 25;
-            } else if (coinArray[i] == 'H') {
-                countCoins += 50;
-            } else if (coinArray[i] == 'W') {
-                countCoins += 100;
-            } else {
-                System.out.println("Invalid Coin: " + coinArray[i]);
             }
         }
-
         return countCoins;
     }    
     

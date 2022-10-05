@@ -52,7 +52,7 @@ public final class BankUtility {
     static long convertFromDollarsToCents(double amount) {        
         return (long) (amount * 100);
     }     
-    
+
     static boolean isNumeric(String numberToCheck) {        
         if (numberToCheck == null) {
             return false;
