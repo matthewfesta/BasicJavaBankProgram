@@ -85,34 +85,112 @@ public class BankManager {
                     Account newAccount = new Account(firstName, lastName, socSecurity);
                     // Add account to bank:
                     myBank.addAccountToBank(newAccount);
-
+                    // Display account information using toString:
+                    System.out.println(newAccount.toString());
                     break;
                 case 2:
-                    deleteAccount();
+                    // Get account information and balance
+                    Account account = promptForAccountNumberAndPIN(myBank);
+                    if (account != null) {
+                        System.out.println(account.toString());
+                    } else {
+                        System.out.println("Account not found.");
+                    }
                     break;
                 case 3:
-                    findAccount();
+                    // Set new pin:
+                    account = promptForAccountNumberAndPIN(myBank);
+                    if (account != null) {
+                        String newPin = BankUtility.promptUserForString("Enter new PIN: ");
+                        account.setPin(newPin);
+                        System.out.println("PIN changed successfully.");
+                    } else {
+                        System.out.println("Account not found.");
+                    }
                     break;
                 case 4:
-                    deposit();
+                    // Deposit money in account
+                    account = promptForAccountNumberAndPIN(myBank);
+                    if (account != null) {
+                        String depositAmountString = BankUtility.promptUserForString("Enter amount to deposit: ");
+                        double depositAmount = Double.parseDouble(depositAmountString);
+                        account.deposit(depositAmount);
+                        System.out.println("Deposit successful.");
+                    } else {
+                        System.out.println("Account not found.");
+                    }
                     break;
                 case 5:
-                    withdraw();
+                    // Transfer money between accounts:
+                    // From account:
+                    Account fromAccount = promptForAccountNumberAndPIN(myBank);
+                    if (fromAccount != null) {
+                        // To account:
+                        Account toAccount = promptForAccountNumberAndPIN(myBank);
+                        if (toAccount != null) {
+                            String transferAmountString = BankUtility.promptUserForString("Enter amount to transfer: ");
+                            double transferAmount = Double.parseDouble(transferAmountString);
+                            fromAccount.transfer(toAccount, transferAmount); // TODO: Create transfer method in Account class.
+                            System.out.println("Transfer successful.");
+                        } else {
+                            System.out.println("Transfer to account not found.");
+                        }
+                    } else {
+                        System.out.println("Transfer from account not found.");
+                    }
                     break;
                 case 6:
-                    addInterest();
+                    // Withdraw funds:
+                    account = promptForAccountNumberAndPIN(myBank);
+                    if (account != null) {
+                        String withdrawAmountString = BankUtility.promptUserForString("Enter amount to withdraw: ");
+                        double withdrawAmount = Double.parseDouble(withdrawAmountString);
+                        account.withdraw(withdrawAmount);
+                        System.out.println("Withdrawal successful.");
+                    } else {
+                        System.out.println("Account not found.");
+                    }
                     break;
                 case 7:
-                    printAllAccounts();
+                    // ATM withdrawal:
+                    account = promptForAccountNumberAndPIN(myBank);
+                    if (account != null) {
+                        String withdrawAmountString = BankUtility.promptUserForString("Enter amount to withdraw: ");
+                        double withdrawAmount = Double.parseDouble(withdrawAmountString);
+                        account.atmWithdraw(withdrawAmount); // TOOD: Create atmWithdraw method in Account class.
+                        System.out.println("ATM withdrawal successful.");
+                    } else {
+                        System.out.println("Account not found.");
+                    }
                     break;
                 case 8:
-                    printAccount();
+                    // Deposit change:
+                    account = promptForAccountNumberAndPIN(myBank);
+                    if (account != null) {
+                        String depositAmountString = BankUtility.promptUserForString("Enter amount to deposit: ");
+                        double depositAmount = Double.parseDouble(depositAmountString);
+                        account.depositChange(depositAmount); // TODO: Create depositChange method in Account class.
+                        System.out.println("Deposit change successful.");
+                    } else {
+                        System.out.println("Account not found.");
+                    }
                     break;
                 case 9:
-                    printAccountsWithInterest();
+                    // Close account:
+                    account = promptForAccountNumberAndPIN(myBank);
+                    if (account != null) {
+                        myBank.removeAccountFromBank(account);
+                        System.out.println("Account closed successfully.");
+                    } else {
+                        System.out.println("Account not found.");
+                    }
                     break;
                 case 10:
-                    printAccountsWithInterest();
+                    // Get interest rate:
+                    String interestRateString = BankUtility.promptUserForString("Enter interest rate: ");
+                    double interestRate = Double.parseDouble(interestRateString);
+                    // Add interest to all accounts:
+                    myBank.addMonthlyInterest(interestRate);
                     break;
                 case 11:
                     System.out.println("Goodbye!");
@@ -120,243 +198,7 @@ public class BankManager {
                 default:
                     System.out.println("Invalid Choice");
                     break;
-
             }
-            // Open account menu
-            if (userSelection == 1) {
-                String userFirstName;
-                String userLastName;
-                String ssnRegex = "[0-9]{3}[0-9]{2}[0-9]{4}";
-                String userSSN;
-
-                do {
-                    userFirstName = BankUtility.promptUserForString("Enter Account Owner's First Name: ");
-                } while (userFirstName == null);
-
-                do {
-                    userLastName = BankUtility.promptUserForString("Enter Account Owner's Last Name: ");
-                } while (userLastName == null);
-
-                do {
-                    userSSN = BankUtility.promptUserForString("Enter Account Owner's SSN (9 digits):");
-                } while (!Pattern.matches(ssnRegex, userSSN));
-
-
-                Account openAccount = new Account(userFirstName, userLastName, userSSN);
-
-                System.out.println(openAccount);
-                myBank.getBankAccounts();
-                myBank.addAccountToBank(openAccount);
-
-                String accountString = openAccount.toString();
-                System.out.println("============================================================");
-                System.out.println(accountString);
-                System.out.println("============================================================");
-
-            }
-
-            // View account menu
-            if (userSelection == 2) {
-                myBank.getBankAccounts();
-                Account existingAccount = promptForAccountNumberAndPIN(myBank);
-
-                String accountString = null;
-                if (existingAccount != null) {
-                    accountString = existingAccount.toString();
-                }
-                System.out.println("============================================================");
-                System.out.println(accountString);
-                System.out.println("============================================================");
-            }
-
-            // Set new PIN menu
-            if (userSelection == 3) {
-                String newPIN;
-                String newPINConfirm;
-                String pinRegex = "\\d\\d\\d\\d";
-
-                myBank.getBankAccounts();
-                Account existingAccount = promptForAccountNumberAndPIN(myBank);
-
-                do {
-                    System.out.println("Enter new PIN");
-                    newPIN = scanner.nextLine();
-                } while (!Pattern.matches(pinRegex, newPIN));
-
-                do {
-                System.out.println("Enter new PIN again");
-                    newPINConfirm = scanner.nextLine();
-                } while (!newPIN.equals(newPINConfirm));
-
-                if (newPIN.equals(newPINConfirm)) {
-                    existingAccount.setPin(newPINConfirm);
-                    System.out.println("PIN updated");
-                } else {
-                    System.out.println("PINs do not match.");
-                }
-            }
-
-            // Deposit money menu
-            if (userSelection == 4) {
-                long amount;
-                double number;
-                // Deposit money
-                myBank.getBankAccounts();
-                Account existingAccount = promptForAccountNumberAndPIN(myBank);
-                do {
-                    System.out.println("Enter amount to deposit in dollars and cents (e.g. 2.57)");
-                    number = scanner.nextDouble();
-                } while (number <= 0);
-
-                if (number <= 0) {
-                    System.out.println("Amount cannot be negative. Try again.");
-                }
-                double newBalance = existingAccount.deposit(number);
-                System.out.println("New balance: "+ newBalance);
-            }
-
-
-            // Transfer funds menu
-            if (userSelection == 5) {
-                myBank.getBankAccounts();
-
-                // Get the transfer FROM account
-                System.out.println("Account to Transfer From: ");
-                Account fromAccount = promptForAccountNumberAndPIN(myBank);
-
-                // Get the transfer TO account
-                System.out.println("Account to Transfer To ");
-                Account toAccount = promptForAccountNumberAndPIN(myBank);
-
-                // Transfer amount
-                double transferAmount;
-                do {
-                    System.out.println("Enter amount to transfer in dollars and cents (e.g. 2.57): ");
-                    transferAmount = scanner.nextDouble();
-                } while (transferAmount > fromAccount.getBalance());
-
-                if (transferAmount > fromAccount.getBalance()) {
-                    System.out.println("Insufficient funds in account" + fromAccount.getAccountNumber());
-                }
-
-                double fromBalance = fromAccount.setBalance(fromAccount.getBalance() - transferAmount);
-                double toBalance = toAccount.setBalance(toAccount.getBalance() + transferAmount);
-                System.out.println("Transfer complete");
-                System.out.println("New balance in " + fromAccount.getAccountNumber() + ":" + fromBalance);
-                System.out.println("New balance in " + toAccount.getAccountNumber() + ":"  + toBalance);
-
-            }
-
-            // Withdraw funds menu
-            if (userSelection == 6) {
-                long amount;
-                double number;
-                myBank.getBankAccounts();
-                Account existingAccount = promptForAccountNumberAndPIN(myBank);
-
-                do {
-                    System.out.println("Enter a number: ");
-                    number = scanner.nextDouble();
-                } while (number <= 0 || number > existingAccount.getBalance() );
-
-                if (number <= 0) {
-                    System.out.println("Account cannot be negative. Try again.");
-                }
-                if (number > existingAccount.getBalance()) {
-                    System.out.println("Insufficient funds in account" + existingAccount.getAccountNumber());
-                }
-                double newBalance = existingAccount.withdraw(number);
-                System.out.println("New Balance: "+ newBalance);
-            }
-
-            // ATM withdraw menu
-            if (userSelection == 7) {
-                myBank.getBankAccounts();
-                Account existingAccount = promptForAccountNumberAndPIN(myBank);
-                // Withdraw with the ATM
-                int atmWithdrawAmount;
-                do {
-                    System.out.println("Enter amount to withdraw in dollars (no cents) in multiples of $5 (limit $1000):");
-                    atmWithdrawAmount = scanner.nextInt();
-                } while (atmWithdrawAmount <= 0 || atmWithdrawAmount > existingAccount.getBalance() || atmWithdrawAmount > 1000);
-
-                if (atmWithdrawAmount <= 0) {
-                    System.out.println("Account cannot be negative. Try again.");
-                }
-
-                if (atmWithdrawAmount > existingAccount.getBalance()) {
-                    System.out.println("Insufficient funds in account" + existingAccount.getAccountNumber());
-                }
-
-                existingAccount.withdraw(atmWithdrawAmount);
-                double newBalance = existingAccount.getBalance() - atmWithdrawAmount;
-                // Calculate and display the amount of each bill.
-                int numTwenties = atmWithdrawAmount / 20;
-                int numTens = (atmWithdrawAmount % 20) / 10;
-                int numFives = (atmWithdrawAmount % 10) / 5;
-                System.out.println("Number of 20-dollar bills:" + numTwenties);
-                System.out.println("Number of 10-dollar bills:" + numTens);
-                System.out.println("Number of 5-dollar bills:" + numFives);
-
-                System.out.println("New balance: " + newBalance);
-            }
-
-            // Coin deposit menu
-            if (userSelection == 8) {
-               myBank.getBankAccounts();
-               String coinsToDeposit;
-               Account existingAccount = promptForAccountNumberAndPIN(myBank);
-               coinsToDeposit = BankUtility.promptUserForString("Deposit Coins: ");
-
-               // Deposit change
-                long depositCoins = CoinCollector.parseChange(coinsToDeposit);
-
-                existingAccount.setBalance(existingAccount.getBalance() + depositCoins);
-
-                System.out.println(depositCoins + " Deposited into account");
-                System.out.println("New balance: " + existingAccount.getBalance());
-            }
-
-            // Close account menu
-            if (userSelection == 9) {
-                Account existingAccount = promptForAccountNumberAndPIN(myBank);
-
-                System.out.println("Account " + account.getAccountNumber() + " closed");
-
-                existingAccount.setFirstName(null);
-                existingAccount.setLastName(null);
-                existingAccount.setSocSecurity(null);
-                existingAccount.setPin(null);
-                existingAccount.setBalance(0.00);
-
-                myBank.removeAccountFromBank(existingAccount);
-            }
-
-            // Add interest menu
-            if (userSelection == 10) {
-                myBank.getBankAccounts();
-                int counter = 1;
-                double percentage;
-
-                System.out.println("Enter annual interest rate percentage (e.g. 2.75 for 2.75%):");
-                percentage = scanner.nextDouble();
-                for (int i = 0; i < MAX_ACCOUNTS; i++) {
-                    if (myBank.getBankAccounts()[i] != null) {
-                        myBank.addMonthlyInterest(percentage);
-                        counter++;
-                    }
-                }
-            }
-
-            // End program menu
-            if (userSelection == 11) {
-                System.out.println("End program");
-                return;
-            }
-
-        } while (true);
-
-
+        } while (choice != 11);
     }
-
 }
