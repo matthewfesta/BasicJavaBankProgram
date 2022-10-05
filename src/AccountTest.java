@@ -27,7 +27,5 @@ class AccountTest {
        boolean expectedResult = testAccount.isValidPIN(testPin);
        boolean actualResult = true;
        assertEquals(expectedResult, actualResult);
-
-
     }
 }
