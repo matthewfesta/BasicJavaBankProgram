@@ -153,4 +153,16 @@ public class Account {
                 getPin(),
                 getBalance());
     }
+
+    public void transfer(Account toAccount, double transferAmount) {
+        if (transferAmount > this.balance) {
+            System.out.println("Insufficient funds");
+        } else {
+            System.out.println("$" + transferAmount + " has been transferred from "
+                    + this.accountNumber + " to " + toAccount.getAccountNumber() + " and the new balance is: "
+                    + (this.balance - transferAmount));
+            this.balance -= transferAmount;
+            toAccount.balance += transferAmount;
+        }
+    }
 }

@@ -11,7 +11,7 @@ import static java.lang.Integer.parseInt;
  */
 
 public class BankManager {
-    static Bank myBank = new Bank(Bank);
+    static Bank myBank = new Bank();
     static Scanner scanner = new Scanner(System.in);
 
     /**
@@ -41,24 +41,27 @@ public class BankManager {
      * @return
      */
     public static Account promptForAccountNumberAndPIN(Bank bank) {
-        Account[] bankAccounts = new Account[MAX_ACCOUNTS];
-        bank.setBankAccounts(bankAccounts);
-        // implement promptForAccountNumberAndPIN here
-
-        // Get the account.
-        bank.getBankAccounts();
-        int userAccountNumber;
-        userAccountNumber = Integer.parseInt(BankUtility.promptUserForString("Enter account number: "));
-        Account accountFound = bank.findAccount(userAccountNumber);
-        accountFound.getPin();
-        String userPin;
-        String accountPin = accountFound.getPin();
-
-        userPin = BankUtility.promptUserForString("Enter PIN: ");
-        if (accountFound.isValidPIN(userPin)) {
-            return accountFound;
+        // Prompt for account number
+        System.out.println("Enter account number: ");
+        int accountNumber = scanner.nextInt();
+        scanner.nextLine();
+        // Find account in bank:
+        int accountIndex = bank.findAccount(accountNumber);
+        if (accountIndex < 0) {
+            System.out.println("Account not found");
+            return null;
         }
-        return null;
+        Account account = bank.getAccounts().get(accountIndex);
+        // Prompt for PIN
+        System.out.println("Enter PIN: ");
+        String pin = scanner.nextLine();
+        // Check PIN
+        if (!account.isValidPIN(pin)) {
+            System.out.println("Incorrect PIN");
+            return null;
+        } else {
+            return account;
+        }
     }
 
     public static void main(String[] args) {
@@ -130,7 +133,7 @@ public class BankManager {
                         if (toAccount != null) {
                             String transferAmountString = BankUtility.promptUserForString("Enter amount to transfer: ");
                             double transferAmount = Double.parseDouble(transferAmountString);
-                            fromAccount.transfer(toAccount, transferAmount); // TODO: Create transfer method in Account class.
+                            fromAccount.transfer(toAccount, transferAmount); 
                             System.out.println("Transfer successful.");
                         } else {
                             System.out.println("Transfer to account not found.");
