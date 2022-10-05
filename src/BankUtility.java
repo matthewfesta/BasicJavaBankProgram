@@ -12,14 +12,14 @@ public final class BankUtility {
     private BankUtility() {
         
     }
-    // TODO figure out how to use promptUserForString in main program
+
     static String promptUserForString(String prompt) {
         System.out.println(prompt);
         Scanner scanner = new Scanner(System.in);
         String inputString = scanner.nextLine();
         return inputString;
     }
-    // TODO figure out how to use promptUserForPositiveNumber in main program
+
     static double promptUserForPositiveNumber(String prompt) {
         Scanner scanner;
         scanner = new Scanner(System.in);
@@ -48,23 +48,11 @@ public final class BankUtility {
         return randomInt;
     }     
 
-    // TODO complete this method
+
     static long convertFromDollarsToCents(double amount) {        
-        // implement convertFromDollarsToCents here     
-        
-        return 0; // be sure to change as needed
+        return (long) (amount * 100);
     }     
     
-    /**
-     * Checks if a given string is a number (long)
-     * This does NOT handle decimals.
-     * 
-     * YOU DO NOT NEED TO CHANGE THIS METHOD
-     * THIS IS FREE FOR YOU TO USE AS NEEDED
-     * 
-     * @param numberToCheck String to check
-     * @return true if the String is a number, false otherwise
-     */
     static boolean isNumeric(String numberToCheck) {        
         if (numberToCheck == null) {
             return false;

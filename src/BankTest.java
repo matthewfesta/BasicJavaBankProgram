@@ -26,12 +26,6 @@ class BankTest {
 
 
     @Test
-    void findExistingAccount() {
-
-    }
-
-
-    @Test
     void addMonthlyInterest() {
         System.out.println("addMonthlyInterest");
         Account account = new Account();

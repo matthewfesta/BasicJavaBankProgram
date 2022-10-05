@@ -65,12 +65,14 @@ public class Bank {
      * @return The Account object
      */
     public int findAccount(int accountNumber) {
+        // Find the account index of accountNumber
         for (int i = 0; i < this.accounts.size(); i++) {
             Account account = this.accounts.get(i);
             if (account.getAccountNumber() == accountNumber) {
                 return i;
             }
         }
+        System.out.println("Account not found");
         return -1;
     }
 
@@ -80,12 +82,13 @@ public class Bank {
      * @param percent
      */
     public void addMonthlyInterest(double percent) {
-        for (Account account : this.accounts) {
-            double monthlyInterest = (account.getBalance() * (percent / 100)) * 12;
-            double interestBalance = account.deposit(monthlyInterest);
-            System.out.println("Deposited Interest: " + monthlyInterest + " into account number: "
-                    + account.getAccountNumber() + ", new balance: " + interestBalance);
+        // Calculate the percentage
+        double percentage = percent / 100;
+        for (int i = 0; i < this.accounts.size(); i++) {
+            Account account = this.accounts.get(i);
+            double balance = account.getBalance();
+            double interest = balance * percentage;
+            account.deposit(balance + interest);
         }
     }
-
 }

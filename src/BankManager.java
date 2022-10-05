@@ -171,8 +171,9 @@ public class BankManager {
                     account = promptForAccountNumberAndPIN(myBank);
                     if (account != null) {
                         String depositAmountString = BankUtility.promptUserForString("Enter amount to deposit: ");
-                        double depositAmount = Double.parseDouble(depositAmountString);
-                        account.depositChange(depositAmount); // TODO: Create depositChange method in Account class.
+                        // parse change from bank utility:
+                        long change = CoinCollector.parseChange(depositAmountString); // TODO: Correct this method.
+                        account.deposit(change);
                         System.out.println("Deposit change successful.");
                     } else {
                         System.out.println("Account not found.");
