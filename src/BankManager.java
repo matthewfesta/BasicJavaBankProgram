@@ -11,34 +11,117 @@ import static java.lang.Integer.parseInt;
  */
 
 public class BankManager {
+    static Bank myBank = new Bank(Bank);
+    static Scanner scanner = new Scanner(System.in);
+
+    /**
+     * This method displays the main menu to the user.
+     */
+    public static void mainMenu() {
+        System.out.println("============================================================");
+        System.out.println("What do you want to do?");
+        System.out.println("1. Open an account");
+        System.out.println("2. Get account information and balance");
+        System.out.println("3. Change PIN");
+        System.out.println("4. Deposit money in account");
+        System.out.println("5. Transfer money between accounts");
+        System.out.println("6. Withdraw money from account");
+        System.out.println("7. ATM withdrawal");
+        System.out.println("8. Deposit change");
+        System.out.println("9. Close an account");
+        System.out.println("10. Add monthly interest to all accounts");
+        System.out.println("11. End Program");
+        System.out.println("============================================================");
+    }
 
 
-    private static final int MAX_ACCOUNTS = 100;
+    /**
+     * This method prompts the user for the account number and pin of an existing account.
+     * @param bank
+     * @return
+     */
+    public static Account promptForAccountNumberAndPIN(Bank bank) {
+        Account[] bankAccounts = new Account[MAX_ACCOUNTS];
+        bank.setBankAccounts(bankAccounts);
+        // implement promptForAccountNumberAndPIN here
 
+        // Get the account.
+        bank.getBankAccounts();
+        int userAccountNumber;
+        userAccountNumber = Integer.parseInt(BankUtility.promptUserForString("Enter account number: "));
+        Account accountFound = bank.findAccount(userAccountNumber);
+        accountFound.getPin();
+        String userPin;
+        String accountPin = accountFound.getPin();
 
+        userPin = BankUtility.promptUserForString("Enter PIN: ");
+        if (accountFound.isValidPIN(userPin)) {
+            return accountFound;
+        }
+        return null;
+    }
 
     public static void main(String[] args) {
-        Bank mainBank = new Bank(bankAccounts);
-        Account[] bankAccounts = new Account[MAX_ACCOUNTS];
-        for (int i = 0; i < MAX_ACCOUNTS; i++) {
-            bankAccounts[i] = new Account();
-        }
-        mainBank.setBankAccounts(bankAccounts);
-        Account account = new Account();
-
-
-        Scanner scanner = new Scanner(System.in);
-        int userSelection;
+        Scanner input = new Scanner(System.in);
+        boolean quit = false;
+        int choice;
 
         // Loop through main menu options.
         do {
             mainMenu();
             String userSelectionString = BankUtility.promptUserForString("What do you want to do?");
-            userSelection = parseInt(userSelectionString);
-            if (userSelection < 1 || userSelection > 11) {
+            choice = parseInt(userSelectionString);
+            if (choice < 1 || choice > 11) {
                 System.out.println("Invalid Choice");
             }
+            switch (choice) {
+                case 1:
+                    // Get user input to open a new account
+                    String firstName = BankUtility.promptUserForString("Enter your first name: ");
+                    String lastName = BankUtility.promptUserForString("Enter your last name: ");
+                    String socSecurity = BankUtility.promptUserForString("Enter your social security number: ");
 
+                    // Create a new account:
+                    Account newAccount = new Account(firstName, lastName, socSecurity);
+                    // Add account to bank:
+                    myBank.addAccountToBank(newAccount);
+
+                    break;
+                case 2:
+                    deleteAccount();
+                    break;
+                case 3:
+                    findAccount();
+                    break;
+                case 4:
+                    deposit();
+                    break;
+                case 5:
+                    withdraw();
+                    break;
+                case 6:
+                    addInterest();
+                    break;
+                case 7:
+                    printAllAccounts();
+                    break;
+                case 8:
+                    printAccount();
+                    break;
+                case 9:
+                    printAccountsWithInterest();
+                    break;
+                case 10:
+                    printAccountsWithInterest();
+                    break;
+                case 11:
+                    System.out.println("Goodbye!");
+                    break;
+                default:
+                    System.out.println("Invalid Choice");
+                    break;
+
+            }
             // Open account menu
             if (userSelection == 1) {
                 String userFirstName;
@@ -62,8 +145,8 @@ public class BankManager {
                 Account openAccount = new Account(userFirstName, userLastName, userSSN);
 
                 System.out.println(openAccount);
-                mainBank.getBankAccounts();
-                mainBank.addAccountToBank(openAccount);
+                myBank.getBankAccounts();
+                myBank.addAccountToBank(openAccount);
 
                 String accountString = openAccount.toString();
                 System.out.println("============================================================");
@@ -74,8 +157,8 @@ public class BankManager {
 
             // View account menu
             if (userSelection == 2) {
-                mainBank.getBankAccounts();
-                Account existingAccount = promptForAccountNumberAndPIN(mainBank);
+                myBank.getBankAccounts();
+                Account existingAccount = promptForAccountNumberAndPIN(myBank);
 
                 String accountString = null;
                 if (existingAccount != null) {
@@ -92,8 +175,8 @@ public class BankManager {
                 String newPINConfirm;
                 String pinRegex = "\\d\\d\\d\\d";
 
-                mainBank.getBankAccounts();
-                Account existingAccount = promptForAccountNumberAndPIN(mainBank);
+                myBank.getBankAccounts();
+                Account existingAccount = promptForAccountNumberAndPIN(myBank);
 
                 do {
                     System.out.println("Enter new PIN");
@@ -118,8 +201,8 @@ public class BankManager {
                 long amount;
                 double number;
                 // Deposit money
-                mainBank.getBankAccounts();
-                Account existingAccount = promptForAccountNumberAndPIN(mainBank);
+                myBank.getBankAccounts();
+                Account existingAccount = promptForAccountNumberAndPIN(myBank);
                 do {
                     System.out.println("Enter amount to deposit in dollars and cents (e.g. 2.57)");
                     number = scanner.nextDouble();
@@ -135,15 +218,15 @@ public class BankManager {
 
             // Transfer funds menu
             if (userSelection == 5) {
-                mainBank.getBankAccounts();
+                myBank.getBankAccounts();
 
                 // Get the transfer FROM account
                 System.out.println("Account to Transfer From: ");
-                Account fromAccount = promptForAccountNumberAndPIN(mainBank);
+                Account fromAccount = promptForAccountNumberAndPIN(myBank);
 
                 // Get the transfer TO account
                 System.out.println("Account to Transfer To ");
-                Account toAccount = promptForAccountNumberAndPIN(mainBank);
+                Account toAccount = promptForAccountNumberAndPIN(myBank);
 
                 // Transfer amount
                 double transferAmount;
@@ -168,8 +251,8 @@ public class BankManager {
             if (userSelection == 6) {
                 long amount;
                 double number;
-                mainBank.getBankAccounts();
-                Account existingAccount = promptForAccountNumberAndPIN(mainBank);
+                myBank.getBankAccounts();
+                Account existingAccount = promptForAccountNumberAndPIN(myBank);
 
                 do {
                     System.out.println("Enter a number: ");
@@ -188,8 +271,8 @@ public class BankManager {
 
             // ATM withdraw menu
             if (userSelection == 7) {
-                mainBank.getBankAccounts();
-                Account existingAccount = promptForAccountNumberAndPIN(mainBank);
+                myBank.getBankAccounts();
+                Account existingAccount = promptForAccountNumberAndPIN(myBank);
                 // Withdraw with the ATM
                 int atmWithdrawAmount;
                 do {
@@ -220,9 +303,9 @@ public class BankManager {
 
             // Coin deposit menu
             if (userSelection == 8) {
-               mainBank.getBankAccounts();
+               myBank.getBankAccounts();
                String coinsToDeposit;
-               Account existingAccount = promptForAccountNumberAndPIN(mainBank);
+               Account existingAccount = promptForAccountNumberAndPIN(myBank);
                coinsToDeposit = BankUtility.promptUserForString("Deposit Coins: ");
 
                // Deposit change
@@ -236,7 +319,7 @@ public class BankManager {
 
             // Close account menu
             if (userSelection == 9) {
-                Account existingAccount = promptForAccountNumberAndPIN(mainBank);
+                Account existingAccount = promptForAccountNumberAndPIN(myBank);
 
                 System.out.println("Account " + account.getAccountNumber() + " closed");
 
@@ -246,20 +329,20 @@ public class BankManager {
                 existingAccount.setPin(null);
                 existingAccount.setBalance(0.00);
 
-                mainBank.removeAccountFromBank(existingAccount);
+                myBank.removeAccountFromBank(existingAccount);
             }
 
             // Add interest menu
             if (userSelection == 10) {
-                mainBank.getBankAccounts();
+                myBank.getBankAccounts();
                 int counter = 1;
                 double percentage;
 
                 System.out.println("Enter annual interest rate percentage (e.g. 2.75 for 2.75%):");
                 percentage = scanner.nextDouble();
                 for (int i = 0; i < MAX_ACCOUNTS; i++) {
-                    if (mainBank.getBankAccounts()[i] != null) {
-                        mainBank.addMonthlyInterest(percentage);
+                    if (myBank.getBankAccounts()[i] != null) {
+                        myBank.addMonthlyInterest(percentage);
                         counter++;
                     }
                 }
@@ -274,52 +357,6 @@ public class BankManager {
         } while (true);
 
 
-    }
-
-    /**
-     * This method displays the main menu to the user.
-     */
-    public static void mainMenu() {
-        System.out.println("============================================================");
-        System.out.println("What do you want to do?");
-        System.out.println("1. Open an account");
-        System.out.println("2. Get account information and balance");
-        System.out.println("3. Change PIN");
-        System.out.println("4. Deposit money in account");
-        System.out.println("5. Transfer money between accounts");
-        System.out.println("6. Withdraw money from account");
-        System.out.println("7. ATM withdrawal");
-        System.out.println("8. Deposit change");
-        System.out.println("9. Close an account");
-        System.out.println("10. Add monthly interest to all accounts");
-        System.out.println("11. End Program");
-        System.out.println("============================================================");
-    }
-
-    /**
-     * This method prompts the user for the account number and pin of an existing account.
-     * @param bank
-     * @return
-     */
-    public static Account promptForAccountNumberAndPIN(Bank bank) {
-        Account[] bankAccounts = new Account[MAX_ACCOUNTS];
-        bank.setBankAccounts(bankAccounts);
-        // implement promptForAccountNumberAndPIN here
-
-        // Get the account.
-        bank.getBankAccounts();
-        int userAccountNumber;
-        userAccountNumber = Integer.parseInt(BankUtility.promptUserForString("Enter account number: "));
-        Account accountFound = bank.findAccount(userAccountNumber);
-        accountFound.getPin();
-        String userPin;
-        String accountPin = accountFound.getPin();
-
-        userPin = BankUtility.promptUserForString("Enter PIN: ");
-        if (accountFound.isValidPIN(userPin)) {
-            return accountFound;
-        }
-        return null;
     }
 
 }

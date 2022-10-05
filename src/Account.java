@@ -3,7 +3,6 @@
  */
 
 public class Account {
-
     /**
      * These are the fields used in the accounts.
      */
@@ -13,7 +12,6 @@ public class Account {
     private String socSecurity;
     private String pin;
     private double balance;
-
 
     /**
      * This constructor initializes the account object of the class
@@ -27,7 +25,6 @@ public class Account {
         this.socSecurity = socSecurity;
         this.pin = String.valueOf(BankUtility.generateRandomInteger(1000, 9999));
         this.balance = 0.00;
-
     }
 
     /**
@@ -38,8 +35,6 @@ public class Account {
     }
 
     // Setters
-
-
     public void setAccountNumber(int accountNumber) {
         this.accountNumber = accountNumber;
     }
