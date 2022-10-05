@@ -1,10 +1,6 @@
 /**
  * This class deposits strings as coins with certain values into the account.
  *
- *  Author: Matthew Festa
- *  festam@merrimack.edu
- *  CSC 6001 - Foundations of Programming 1
- *  Programming Final Project (Module 8 Assignment 1)
  */
 
 

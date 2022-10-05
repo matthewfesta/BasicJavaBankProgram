@@ -1,11 +1,5 @@
 import java.util.Scanner;
 
-/**
- *  Author: Matthew Festa
- *  festam@merrimack.edu
- *  CSC 6001 - Foundations of Programming 1
- *  Programming Final Project (Module 8 Assignment 1)
- */
 
 public final class BankUtility {
     
