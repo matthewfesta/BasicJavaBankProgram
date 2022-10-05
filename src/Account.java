@@ -34,39 +34,12 @@ public class Account {
         new Account(firstName,lastName, socSecurity);
     }
 
-    // Setters
-    public void setAccountNumber(int accountNumber) {
-        this.accountNumber = accountNumber;
-    }
-
-    public void setFirstName (String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName (String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setSocSecurity(String socSecurity) {
-        this.socSecurity = socSecurity;
-    }
-
     public void setPin (String pin) {
         this.pin = pin;
     }
 
-    public double setBalance (double balance) {
-        this.balance = balance;
-        return balance;
-    }
 
     // Getters
-
-    /**
-     * The getters below each retrieve a different attribute of the account without
-     * accessing the object's attributes directly.
-     *
-     */
 
     public int getAccountNumber() {
         return accountNumber;
@@ -93,10 +66,12 @@ public class Account {
      * @return
      */
     public long deposit(double amount) {
-        System.out.println("$" + amount + " has been deposited into " +
-                this.accountNumber + " and the new balance is: "
-                + (this.balance + amount));
-        return (long) (this.balance += amount);
+        if (amount <= 0) {
+            System.out.println("Amount cannot be negative. Try again.");
+            return -1;
+        }
+        this.balance += amount;
+        return BankUtility.convertFromDollarsToCents(amount);
     }
 
 
@@ -106,16 +81,16 @@ public class Account {
      * @return
      */
     public long withdraw(double amount) {
-        if (amount > this.balance) {
-            System.out.println("Insufficient funds");
-            return 0;
-        } else {
-            System.out.println("$" + amount + " has been withdrawn from "
-                    + this.accountNumber + " and the new balance is: "
-                    + (this.balance - amount));
-            return (long) (this.balance -= amount);
+        if (amount <= 0) {
+            System.out.println("Amount cannot be negative. Try again.");
+            return -1;
         }
-
+        if (amount > this.balance) {
+            System.out.println("Insufficient funds. Try again.");
+            return -1;
+        }
+        this.balance -= amount;
+        return BankUtility.convertFromDollarsToCents(amount);
     }
 
     /**
@@ -125,13 +100,7 @@ public class Account {
      * @return
      */
     public boolean isValidPIN(String pin) {
-        if (this.pin.equals(pin)) {
-            System.out.println("PIN is valid!");
-            return true;
-        }
-        System.out.println("PIN is invalid!");
-        return false;
-
+        return this.pin.equals(pin);
     }
 
     /**
@@ -163,6 +132,30 @@ public class Account {
                     + (this.balance - transferAmount));
             this.balance -= transferAmount;
             toAccount.balance += transferAmount;
+        }
+    }
+
+    public void atmWithdraw(double withdrawAmount) {
+        // Get 20, 10, 5, 1 dollar bills from the ATM
+        if (withdrawAmount > this.balance) {
+            System.out.println("Insufficient funds");
+        } else {
+            // Get 20 dollar bills
+            int twentyDollarBills = (int) (withdrawAmount / 20);
+            withdrawAmount -= twentyDollarBills * 20;
+            System.out.println("Dispensing " + twentyDollarBills + " $20 dollar bills");
+            // Get 10 dollar bills
+            int tenDollarBills = (int) (withdrawAmount / 10);
+            withdrawAmount -= tenDollarBills * 10;
+            System.out.println("Dispensing " + tenDollarBills + " $10 dollar bills");
+            // Get 5 dollar bills
+            int fiveDollarBills = (int) (withdrawAmount / 5);
+            withdrawAmount -= fiveDollarBills * 5;
+            System.out.println("Dispensing " + fiveDollarBills + " $5 dollar bills");
+            // Get 1 dollar bills
+            int oneDollarBills = (int) (withdrawAmount / 1);
+            withdrawAmount -= oneDollarBills;
+            System.out.println("Dispensing " + oneDollarBills + " $1 dollar bills");
         }
     }
 }

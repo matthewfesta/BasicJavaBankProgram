@@ -133,7 +133,7 @@ public class BankManager {
                         if (toAccount != null) {
                             String transferAmountString = BankUtility.promptUserForString("Enter amount to transfer: ");
                             double transferAmount = Double.parseDouble(transferAmountString);
-                            fromAccount.transfer(toAccount, transferAmount); 
+                            fromAccount.transfer(toAccount, transferAmount);
                             System.out.println("Transfer successful.");
                         } else {
                             System.out.println("Transfer to account not found.");
