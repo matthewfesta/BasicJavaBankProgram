@@ -1,0 +1,17 @@
+
+~
+java:S1488"cImmediately return this expression instead of assigning it to the temporary variable "inputString".(áÍîíÿÿÿÿÿ
+w
+java:S1488)"aImmediately return this expression instead of assigning it to the temporary variable "randomInt".(’•Š
+0
+java:S1220""Move this file to a named package.
+S	java:S106"9Replace this use of System.out or System.err by a logger.(¶Û¼Íøÿÿÿÿ
+V
+java:S1854";Remove this useless assignment to local variable "scanner".(À’·êøÿÿÿÿ
+C
+java:S1172"-Remove this unused method parameter "prompt".(Ì­±Š
+S	java:S106"9Replace this use of System.out or System.err by a logger.(İÎ¤Âşÿÿÿÿ
+N	java:S106"9Replace this use of System.out or System.err by a logger.(İ›’Ô
+?
+java:S2140)")Use "java.util.Random.nextInt()" instead.(’•Š
+M	java:S106:"9Replace this use of System.out or System.err by a logger.(àÛ½
